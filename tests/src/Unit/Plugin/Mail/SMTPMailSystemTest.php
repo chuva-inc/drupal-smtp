@@ -63,12 +63,14 @@ class SMTPMailSystemTest extends UnitTestCase {
         'name@example.com',
         // Expected.
         [
+          'name' => '',
           'email' => 'name@example.com',
         ],
       ],
       [
         ' name@example.com',
         [
+          'name' => '',
           'input' => 'name@example.com',
           'email' => 'name@example.com',
         ],
@@ -76,6 +78,7 @@ class SMTPMailSystemTest extends UnitTestCase {
       [
         'name@example.com ',
         [
+          'name' => '',
           'input' => 'name@example.com',
           'email' => 'name@example.com',
         ],
@@ -97,6 +100,7 @@ class SMTPMailSystemTest extends UnitTestCase {
       [
         '<address@example.com>',
         [
+          'name' => '',
           'email' => 'address@example.com',
         ],
       ],
@@ -120,8 +124,8 @@ class SMTPMailSystemTest extends UnitTestCase {
       $this->assertEquals($input, $ret['input']);
     }
 
-    $this->assertEquals($expected['name'] ?? '', $ret['name']);
-    $this->assertEquals($expected['email'] ?? '', $ret['email']);
+    $this->assertEquals($expected['name'], $ret['name']);
+    $this->assertEquals($expected['email'], $ret['email']);
   }
 
 }
