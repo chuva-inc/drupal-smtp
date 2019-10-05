@@ -357,6 +357,10 @@ class SMTPConfigForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  protected function getEditableConfigNames() {}
+  protected function getEditableConfigNames() {
+    return [
+      'smtp.settings',
+    ];
+  }
 
 }
