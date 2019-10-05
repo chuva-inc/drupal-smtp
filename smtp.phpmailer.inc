@@ -209,6 +209,12 @@ class PHPMailer {
   public $SMTPAuth      = FALSE;
 
   /**
+   * Options array passed to stream_context_create when connecting via SMTP.
+   * @var array
+   */
+  public $SMTPOptions = array();
+
+  /**
    * Sets SMTP username.
    * @var string
    */
@@ -673,7 +679,7 @@ class PHPMailer {
   protected function SmtpSend($header, $body) {
     $bad_rcpt = array();
 
-    if (!$this->SmtpConnect()) {
+    if (!$this->SmtpConnect($this->SMTPOptions)) {
       throw new phpmailerException(t('SMTP Error: Could not connect to SMTP host.'), self::STOP_CRITICAL);
     }
     $smtp_from = ($this->Sender == '') ? $this->From : $this->Sender;
@@ -739,13 +745,19 @@ class PHPMailer {
   /**
    * Initiates a connection to an SMTP server.
    * Returns FALSE if the operation failed.
+   * @param array $options An array of options compatible with stream_context_create()
    * @uses SMTP
    * @access public
    * @return bool
    */
-  public function SmtpConnect() {
+  public function SmtpConnect($options = null) {
     if (is_null($this->smtp)) {
       $this->smtp = new SMTP();
+    }
+
+    // if no options are provided, use whatever is set in the instance
+    if (is_null($options)) {
+        $options = $this->SMTPOptions;
     }
 
     $this->smtp->do_debug = $this->SMTPDebug;
@@ -770,7 +782,7 @@ class PHPMailer {
         $tls = ($this->SMTPSecure == 'tls');
         $ssl = ($this->SMTPSecure == 'ssl');
 
-        if ($this->smtp->Connect(($ssl ? 'ssl://':'') . $host, $port, $this->Timeout)) {
+        if ($this->smtp->Connect(($ssl ? 'ssl://':'') . $host, $port, $this->Timeout, $options)) {
 
           $hello = ($this->Helo != '' ? $this->Helo : $this->ServerHostname());
           $this->smtp->Hello($hello);

@@ -114,8 +114,14 @@ class SMTP {
    * @access public
    * @return bool
    */
-  public function Connect($host, $port = 0, $tval = 30) {
-    // set the error val to NULL so there is no confusion
+  public function Connect($host, $port = 0, $tval = 30, $options = array()) {
+    static $streamok;
+    // This is enabled by default since 5.0.0 but some providers disable it
+    // Check this once and cache the result
+    if (is_null($streamok)) {
+      $streamok = function_exists('stream_socket_client');
+    }
+    // clear errors to avoid confusion
     $this->error = NULL;
 
     // make sure we are __not__ connected
@@ -129,14 +135,32 @@ class SMTP {
       $port = $this->SMTP_PORT;
     }
 
-    // connect to the smtp server
-    $this->smtp_conn = @fsockopen($host,    // the host of the server
-                                 $port,    // the port to use
-                                 $errno,   // error number if any
-                                 $errstr,  // error message if any
-                                 $tval);   // give up after ? secs
+    $errno = 0;
+    $errstr = '';
+    if ($streamok) {
+      $socket_context = stream_context_create($options);
+      // Suppress errors; connection failures are handled at a higher level
+      $this->smtp_conn = @stream_socket_client(
+          $host . ":" . $port,
+          $errno,
+          $errstr,
+          $tval,
+          STREAM_CLIENT_CONNECT,
+          $socket_context
+      );
+    } else {
+      // Fall back to fsockopen which should work in more places, but is missing some features
+      $this->smtp_conn = @fsockopen(
+          $host,
+          $port,
+          $errno,
+          $errstr,
+          $tval
+      );
+    }
+
     // verify we connected properly
-    if (empty($this->smtp_conn)) {
+    if (!is_resource($this->smtp_conn)) {
       $this->error = array("error" => "Failed to connect to server",
                            "errno" => $errno,
                            "errstr" => $errstr);
@@ -148,8 +172,14 @@ class SMTP {
 
     // SMTP server can take longer to respond, give longer timeout for first read
     // Windows does not have support for this timeout function
-    if (substr(PHP_OS, 0, 3) != "WIN")
-     socket_set_timeout($this->smtp_conn, $tval, 0);
+    if (substr(PHP_OS, 0, 3) != 'WIN'){
+      $max = ini_get('max_execution_time');
+      // Don't bother if unlimited
+      if ($max != 0 && $tval > $max) {
+        @set_time_limit($tval);
+      }
+      stream_set_timeout($this->smtp_conn, $tval, 0);
+    }
 
     // get any announcement
     $announce = $this->get_lines();
