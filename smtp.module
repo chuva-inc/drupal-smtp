@@ -100,9 +100,9 @@ function smtp_cron_queue_info() {
  *
  * @param object
  */
-function smtp_send_queue($mailerObj) {
+function smtp_send_queue($mailer_object) {
   $queue = DrupalQueue::get('smtp_send_queue');
-  $queue->createItem($mailerObj);
+  $queue->createItem($mailer_object);
 }
 
 /**

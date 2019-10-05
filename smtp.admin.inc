@@ -341,6 +341,5 @@ function smtp_admin_settings_submit_post_system_settings($form, &$form_state) {
     $params['subject'] = t('Drupal SMTP test e-mail');
     $params['body'] = array(t('If you receive this message it means your site is capable of using SMTP to send e-mail.'));
     drupal_mail('smtp', 'smtp-test', $test_address, $language, $params);
-    drupal_set_message(t('A test e-mail has been sent to @email. You may want to !check for any error messages.', array('@email' => $test_address, '!check' => l(t('check the logs'), 'admin/reports/dblog'))));
-  }
+    drupal_set_message(t('A test e-mail has been sent to @email. You may want to <a href="!check">check the logs</a> for any error messages.', array('@email' => $test_address, '!check' => url('admin/reports/dblog'))));  }
 }

@@ -1751,7 +1751,7 @@ class PHPMailer {
       // If the string contains an '=', make sure it's the first thing we replace
       // so as to avoid double-encoding
       $s = array_search('=', $matches[0]);
-      if ($s !== false) {
+      if ($s !== FALSE) {
         unset($matches[0][$s]);
         array_unshift($matches[0], '=');
       }
