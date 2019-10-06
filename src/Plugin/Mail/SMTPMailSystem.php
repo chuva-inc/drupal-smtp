@@ -491,7 +491,7 @@ class SMTPMailSystem implements MailInterface, ContainerFactoryPluginInterface {
     }
 
     // Process mimemail attachments, which are prepared in mimemail_mail().
-    if (isset($message['params']['attachments'])) {
+    if (!empty($message['params']['attachments'])) {
       foreach ($message['params']['attachments'] as $attachment) {
         if (isset($attachment['filecontent'])) {
           $mailer->AddStringAttachment($attachment['filecontent'], $attachment['filename'], 'base64', $attachment['filemime']);
