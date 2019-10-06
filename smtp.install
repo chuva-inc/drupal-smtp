@@ -5,6 +5,8 @@
  * The installation instructions for the SMTP Authentication Support.
  */
 
+use Drupal\Core\Url;
+
 /**
  * Implements hook_uninstall().
  */
@@ -21,4 +23,14 @@ function smtp_uninstall() {
 
   // Cleaning garbage.
   $smtp_config->delete();
+}
+
+/**
+ * Implements hook_install().
+ */
+function smtp_install() {
+  drupal_set_message(t('Thanks for installing SMTP Authentication Support'));
+  drupal_set_message(t('Settings on <a href="@url_settings">Home &raquo; Admin &raquo; Config &raquo; System &raquo; SMTP</a> or <a href="@url_settings">@url_settings</a>', [
+    '@url_settings' => Url::fromRoute('smtp.config')->toString(),
+  ]));
 }
