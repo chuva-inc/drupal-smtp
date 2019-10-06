@@ -18,7 +18,7 @@ function smtp_uninstall() {
   $default_system_mail = 'php_mail';
   $mail_config = $config->getEditable('system.mail');
   $default_interface = (!$smtp_config->get('prev_mail_system')) ? $smtp_config->get('prev_mail_system') : $default_system_mail;
-  $mail_config ->set('interface.default', $default_interface)
+  $mail_config->set('interface.default', $default_interface)
     ->save();
 
   // Cleaning garbage.
