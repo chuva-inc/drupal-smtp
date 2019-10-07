@@ -309,7 +309,7 @@ class SMTPMailSystem implements MailInterface, ContainerFactoryPluginInterface {
         case 'bcc':
           $bccrecipients = explode(',', $value);
           foreach ($bccrecipients as $bccrecipient) {
-            $bcc_comp = $this->_get_components($bccrecipient);
+            $bcc_comp = $this->getComponents($bccrecipient);
             $mailer->AddBCC($bcc_comp['email'], Unicode::mimeHeaderEncode($bcc_comp['name']));
           }
           break;
