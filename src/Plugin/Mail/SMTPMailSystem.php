@@ -147,8 +147,20 @@ class SMTPMailSystem implements MailInterface, ContainerFactoryPluginInterface {
       $mailer->SMTPDebug = TRUE;
     }
 
-    // Set the from name.
-    $from_name = $this->smtpConfig->get('smtp_fromname');
+    // The $from address might contain the "name" part. If it does, split it,
+    // since PHPMailer expects $from to be the raw email address.
+    $matches = [];
+    if (preg_match('/^(.*)\s\<(.*)\>$/', $from, $matches)) {
+      $from = $matches[2];
+      $from_name = $matches[1];
+    }
+
+    // If the smtp_fromname is set, it overrides the name that was passed as
+    // part of the $from address.
+    if (!empty($this->smtpConfig->get('smtp_fromname'))) {
+      $from_name = $this->smtpConfig->get('smtp_fromname');
+    }
+
     if (empty($from_name)) {
       // If value is not defined in settings, use site_name.
       $from_name = \Drupal::config('system.site')->get('name');
