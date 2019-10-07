@@ -315,7 +315,8 @@ class SMTPConfigForm extends ConfigFormBase {
     }
 
     // Set as default mail system if module is enabled.
-    if ($config->get('smtp_on')) {
+    if ($config->get('smtp_on') ||
+        ($this->isOverridden('smtp_on') && $values['smtp_on'] == 'on')) {
       if ($mail_system != 'SMTPMailSystem') {
         $config->set('prev_mail_system', $mail_system);
       }
