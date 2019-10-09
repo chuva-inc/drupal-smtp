@@ -419,7 +419,7 @@ class SMTPMailSystem implements MailInterface, ContainerFactoryPluginInterface {
                 // Clean up the text.
                 $body_part2 = trim($this->removeHeaders(trim($body_part2)));
                 // Check whether the encoding is base64, and if so, decode it.
-                if (Unicode::strtolower($body_part2_encoding) == 'base64') {
+                if (mb_strtolower($body_part2_encoding) == 'base64') {
                   // Include it as part of the mail object.
                   $mailer->Body = base64_decode($body_part2);
                   // Ensure the whole message is recoded in the base64 format.
@@ -475,10 +475,10 @@ class SMTPMailSystem implements MailInterface, ContainerFactoryPluginInterface {
               // Clean up the text.
               $body_part = trim($this->removeHeaders(trim($body_part)));
 
-              if (Unicode::strtolower($file_encoding) == 'base64') {
+              if (mb_strtolower($file_encoding) == 'base64') {
                 $attachment = base64_decode($body_part);
               }
-              elseif (Unicode::strtolower($file_encoding) == 'quoted-printable') {
+              elseif (mb_strtolower($file_encoding) == 'quoted-printable') {
                 $attachment = quoted_printable_decode($body_part);
               }
               else {
