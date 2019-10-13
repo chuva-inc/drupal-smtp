@@ -157,7 +157,7 @@ class SMTPConfigForm extends ConfigFormBase {
 
     $form['email_options'] = [
       '#type'  => 'details',
-      '#title' =>$this->t('E-mail options'),
+      '#title' => $this->t('E-mail options'),
       '#open' => TRUE,
     ];
     $form['email_options']['smtp_from'] = [
