@@ -262,7 +262,6 @@ class SMTPMailSystem implements MailInterface, ContainerFactoryPluginInterface {
               $mailer->ContentType = $content_type = 'multipart/alternative';
 
               // Get the boundary ID from the Content-Type header.
-
               $boundary = $this->getSubstring($value, 'boundary', '"', '"');
               break;
 
