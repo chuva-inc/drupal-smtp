@@ -140,7 +140,7 @@ class SMTPMailSystem implements MailInterface, ContainerFactoryPluginInterface {
     $subject = $message['subject'];
 
     // Create a new PHPMailer object - autoloaded from registry.
-    $mailer = new PHPMailer();
+    $mailer = new PHPMailer(TRUE);
 
     // Turn on debugging, if requested.
     if ($this->smtpConfig->get('smtp_debugging') && \Drupal::currentUser()->hasPermission('administer smtp module')) {
