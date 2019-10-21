@@ -33,8 +33,8 @@ Orginal release information:
 
 namespace Drupal\smtp\PHPMailer;
 
-use Drupal\smtp\PHPMailer\SMTP;
 use Drupal\smtp\Exception\PHPMailerException;
+use Drupal\smtp\PHPMailer\SMTP;
 
 /**
  * PHPMailer - PHP email transport class
