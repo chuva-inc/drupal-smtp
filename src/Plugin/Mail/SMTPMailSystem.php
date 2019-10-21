@@ -2,15 +2,15 @@
 
 namespace Drupal\smtp\Plugin\Mail;
 
+use Drupal\Component\Utility\EmailValidator;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Mail\MailFormatHelper;
 use Drupal\Core\Mail\MailInterface;
 use Drupal\Core\Messenger\Messenger;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Egulias\EmailValidator\EmailValidator;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\smtp\PHPMailer\PHPMailer;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Modify the drupal mail system to use smtp when sending emails.
@@ -44,7 +44,7 @@ class SMTPMailSystem implements MailInterface, ContainerFactoryPluginInterface {
   /**
    * Email validator.
    *
-   * @var Egulias\EmailValidator\EmailValidator
+   * @var \Drupal\Component\Utility\EmailValidator
    */
   protected $emailValidator;
 
@@ -61,7 +61,7 @@ class SMTPMailSystem implements MailInterface, ContainerFactoryPluginInterface {
    *   The logger object.
    * @param \Drupal\Core\Messenger\Messenger $messenger
    *   The messenger object.
-   * @param \Egulias\EmailValidator\EmailValidator $emailValidator
+   * @param \Drupal\Component\Utility\EmailValidator $emailValidator
    *   The messenger object.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, LoggerChannelFactoryInterface $logger, Messenger $messenger, EmailValidator $emailValidator) {
