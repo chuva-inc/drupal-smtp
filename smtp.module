@@ -44,7 +44,7 @@ function smtp_queue_info() {
   $queues['smtp_send_queue'] = [
     'worker callback' => 'smtp_send_queue_runner',
     'cron' => [
-      'time' => 60, // This is the max run time per cron run in seconds.
+      'time' => 60,
     ],
   ];
   return $queues;
