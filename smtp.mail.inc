@@ -90,7 +90,6 @@ class SmtpMailSystem implements MailSystemInterface {
     // that it has been translated. The name is set according to the language
     // of the email being sent.
     if (empty($from_name)) {
-
       if (function_exists('i18n_variable_get')) {
         // The 'language' value may be stored as an object.
         $langcode = $message['language'];
@@ -117,7 +116,6 @@ class SmtpMailSystem implements MailSystemInterface {
         }
       }
     }
-
 
     if (variable_get('smtp_client_hostname', '') != '') {
       $mailer->Hostname = variable_get('smtp_client_hostname', '');
