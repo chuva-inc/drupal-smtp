@@ -62,7 +62,7 @@ class SmtpMailSystem implements MailSystemInterface {
   public function mailWithoutQueue(array $message) {
     $to = $message['to'];
     $from = $message['from'];
-    $from_name = isset($message['from_name'])?$message['from_name']:FALSE;
+    $from_name = isset($message['from_name']) ? $message['from_name'] : FALSE;
     $body = $message['body'];
     $headers = $message['headers'];
     $subject = $message['subject'];
@@ -90,6 +90,7 @@ class SmtpMailSystem implements MailSystemInterface {
     // that it has been translated. The name is set according to the language
     // of the email being sent.
     if (empty($from_name)) {
+
       if (function_exists('i18n_variable_get')) {
         // The 'language' value may be stored as an object.
         $langcode = $message['language'];
@@ -104,14 +105,7 @@ class SmtpMailSystem implements MailSystemInterface {
           $from_name = i18n_variable_get('site_name', $langcode, '');
         }
       }
-    }
 
-    if (variable_get('smtp_client_hostname', '') != '') {
-      $mailer->Hostname = variable_get('smtp_client_hostname', '');
-    }
-
-    if (variable_get('smtp_client_helo', '') != '') {
-      $mailer->Helo = variable_get('smtp_client_helo', '');
     }
 
     // If i18n is not enabled, we get the From Name through normal variables
@@ -123,6 +117,14 @@ class SmtpMailSystem implements MailSystemInterface {
         // If value is not defined in settings, use site_name.
         $from_name = variable_get('site_name', '');
       }
+    }
+
+    if (variable_get('smtp_client_hostname', '') != '') {
+      $mailer->Hostname = variable_get('smtp_client_hostname', '');
+    }
+
+    if (variable_get('smtp_client_helo', '') != '') {
+      $mailer->Helo = variable_get('smtp_client_helo', '');
     }
 
     //Hack to fix reply-to issue.
