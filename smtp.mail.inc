@@ -62,6 +62,7 @@ class SmtpMailSystem implements MailSystemInterface {
   public function mailWithoutQueue(array $message) {
     $to = $message['to'];
     $from = $message['from'];
+    $from_name = isset($message['from_name'])?$message['from_name']:FALSE;
     $body = $message['body'];
     $headers = $message['headers'];
     $subject = $message['subject'];
@@ -88,19 +89,20 @@ class SmtpMailSystem implements MailSystemInterface {
     // Set the from name. First we try to get the name from i18n, in the case
     // that it has been translated. The name is set according to the language
     // of the email being sent.
-    $from_name = FALSE;
-    if (function_exists('i18n_variable_get')) {
-      // The 'language' value may be stored as an object.
-      $langcode = $message['language'];
-      if (is_object($langcode)) {
-        $langcode = $langcode->language;
-      }
-      if (i18n_variable_get('smtp_fromname', $langcode, '') != '') {
-        $from_name = i18n_variable_get('smtp_fromname', $langcode, '');
-      }
-      else {
-        // If value is not defined in settings, use site_name.
-        $from_name = i18n_variable_get('site_name', $langcode, '');
+    if (empty($from_name)) {
+      if (function_exists('i18n_variable_get')) {
+        // The 'language' value may be stored as an object.
+        $langcode = $message['language'];
+        if (is_object($langcode)) {
+          $langcode = $langcode->language;
+        }
+        if (i18n_variable_get('smtp_fromname', $langcode, '') != '') {
+          $from_name = i18n_variable_get('smtp_fromname', $langcode, '');
+        }
+        else {
+          // If value is not defined in settings, use site_name.
+          $from_name = i18n_variable_get('site_name', $langcode, '');
+        }
       }
     }
 
