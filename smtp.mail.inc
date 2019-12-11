@@ -257,11 +257,8 @@ class SmtpMailSystem implements MailSystemInterface {
           break;
 
         case 'reply-to':
-          // Only add a "reply-to" if it's not the same as "return-path".
-          if ($value != $headers['Return-Path']) {
-            $replyto_comp = $this->_get_components($value);
-            $mailer->AddReplyTo($replyto_comp['email'], $replyto_comp['name']);
-          }
+          $replyto_comp = $this->_get_components($value);
+          $mailer->AddReplyTo($replyto_comp['email'], $replyto_comp['name']);
           break;
 
         case 'content-transfer-encoding':
