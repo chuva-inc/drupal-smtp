@@ -100,24 +100,24 @@ class SmtpMailSystem implements MailSystemInterface {
         if (i18n_variable_get('smtp_fromname', $langcode, '') != '') {
           $from_name = i18n_variable_get('smtp_fromname', $langcode, '');
         }
+        // If value is not defined in settings, use site_name.
         else {
-          // If value is not defined in settings, use site_name.
           $from_name = i18n_variable_get('site_name', $langcode, '');
         }
       }
-
-    }
-
-    // If i18n is not enabled, we get the From Name through normal variables
-    if (!$from_name) {
-      if (variable_get('smtp_fromname', '') != '') {
-        $from_name = variable_get('smtp_fromname', '');
-      }
+      // If the i18n module is not enabled, get the From name as a
+      // normal variable.
       else {
+        if (variable_get('smtp_fromname', '') != '') {
+          $from_name = variable_get('smtp_fromname', '');
+        }
         // If value is not defined in settings, use site_name.
-        $from_name = variable_get('site_name', '');
+        else {
+          $from_name = variable_get('site_name', '');
+        }
       }
     }
+
 
     if (variable_get('smtp_client_hostname', '') != '') {
       $mailer->Hostname = variable_get('smtp_client_hostname', '');
