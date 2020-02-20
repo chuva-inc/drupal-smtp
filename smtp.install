@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Url;
+use Drupal\smtp\ConnectionTester\ConnectionTester;
 
 /**
  * Implements hook_uninstall().
@@ -39,4 +40,17 @@ function smtp_install() {
   drupal_set_message(t('Settings on <a href="@url_settings">Home &raquo; Admin &raquo; Config &raquo; System &raquo; SMTP</a> or <a href="@url_settings">@url_settings</a>', [
     '@url_settings' => Url::fromRoute('smtp.config')->toString(),
   ]));
+}
+
+/**
+ * Implements hook_requirements().
+ */
+function smtp_requirements(string $phase) {
+  $return = [];
+  // If the phase is not runtime, ConnectionTester might be unavailable.
+  if ($phase == 'runtime') {
+    $tester = new ConnectionTester();
+    $return = $tester->hookRequirements($phase);
+  }
+  return $return;
 }
